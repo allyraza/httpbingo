@@ -1,2 +1,3 @@
 httpbin-server
 config.json
+!cmd/*
