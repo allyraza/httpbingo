@@ -5,6 +5,19 @@ import (
 	"net/http"
 )
 
+const hometpl = `
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>Httpbin - a http test service</title>
+	</head>
+	<body>
+	 <h1>Httpbin</h1>
+	 <a href="#">Documentation</a>
+	</body>
+</html>
+`
+
 func (h *Httpbin) IP(w http.ResponseWriter, r *http.Request) {
 	h.JSON(w, struct {
 		IP string `json:"origin"`
@@ -23,4 +36,8 @@ func (h *Httpbin) Health(w http.ResponseWriter, r *http.Request) {
 
 func (h *Httpbin) Version(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintln(w, version)
+}
+
+func (h *Httpbin) Home(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintln(w, hometpl)
 }
