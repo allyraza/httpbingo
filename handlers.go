@@ -6,7 +6,9 @@ import (
 )
 
 func (h *Httpbin) IP(w http.ResponseWriter, r *http.Request) {
-	h.JSON(w, struct{ IP string }{IP: r.RemoteAddr})
+	h.JSON(w, struct {
+		IP string `json:"origin"`
+	}{IP: r.RemoteAddr})
 }
 
 func (h *Httpbin) UserAgent(w http.ResponseWriter, r *http.Request) {
