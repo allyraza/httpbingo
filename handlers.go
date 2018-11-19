@@ -9,6 +9,12 @@ func (h *Httpbin) IP(w http.ResponseWriter, r *http.Request) {
 	h.JSON(w, struct{ IP string }{IP: r.RemoteAddr})
 }
 
+func (h *Httpbin) UserAgent(w http.ResponseWriter, r *http.Request) {
+	h.JSON(w, struct {
+		UserAgent string `json:"user-agent"`
+	}{UserAgent: r.UserAgent()})
+}
+
 func (h *Httpbin) Health(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 }

@@ -7,6 +7,7 @@ func (h *Httpbin) Routes() {
 	mux.HandleFunc("/health", h.Health)
 	mux.HandleFunc("/version", h.Version)
 	mux.HandleFunc("/ip", h.IP)
+	mux.HandleFunc("/user-agent", h.UserAgent)
 
 	h.mux = mux
 }
