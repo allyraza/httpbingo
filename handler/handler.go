@@ -21,6 +21,17 @@ const hometpl = `
 </html>
 `
 
+func New() *http.ServeMux {
+	mux := http.NewServeMux()
+	mux.HandleFunc("/", Home)
+	mux.HandleFunc("/health", Health)
+	mux.HandleFunc("/version", Version)
+	mux.HandleFunc("/ip", IP)
+	mux.HandleFunc("/user-agent", UserAgent)
+
+	return mux
+}
+
 func IP(w http.ResponseWriter, r *http.Request) {
 	data := struct {
 		IP string `json:"origin"`
