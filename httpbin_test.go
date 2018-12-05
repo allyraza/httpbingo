@@ -7,7 +7,7 @@ import (
 	"testing"
 )
 
-func TestHttpbinNew(t *testing.T) {
+func TestHTTPBinNew(t *testing.T) {
 	config := &Config{
 		Addr: ":3000",
 	}
