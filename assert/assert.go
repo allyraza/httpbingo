@@ -18,3 +18,9 @@ func Equal(t *testing.T, want interface{}, got interface{}) {
 		t.Errorf("Want %v, Got %v\n", want, got)
 	}
 }
+
+func NotEqual(t *testing.T, want interface{}, got interface{}) {
+	if want == got {
+		t.Errorf("Want %v, Got %v", want, got)
+	}
+}
