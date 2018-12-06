@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/allyraza/httpbingo/model"
 	"github.com/allyraza/httpbingo/render"
 	"github.com/allyraza/httpbingo/version"
 )
@@ -21,6 +22,7 @@ const hometpl = `
 </html>
 `
 
+// New init handler and registers routes
 func New() *http.ServeMux {
 	mux := http.NewServeMux()
 	mux.HandleFunc("/", Home)
@@ -32,34 +34,35 @@ func New() *http.ServeMux {
 	return mux
 }
 
+// IP Handler
 func IP(w http.ResponseWriter, r *http.Request) {
-	data := struct {
-		IP string `json:"origin"`
-	}{
+	data := model.IP{
 		IP: r.RemoteAddr,
 	}
 
 	render.JSON(w, data)
 }
 
+// UserAgent Handler
 func UserAgent(w http.ResponseWriter, r *http.Request) {
-	data := struct {
-		UserAgent string `json:"user-agent"`
-	}{
+	data := model.UserAgent{
 		UserAgent: r.UserAgent(),
 	}
 
 	render.JSON(w, data)
 }
 
+// Health Handler
 func Health(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 }
 
+// Version Handler
 func Version(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintln(w, version.Full)
 }
 
+// Home Handler
 func Home(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintln(w, hometpl)
 }

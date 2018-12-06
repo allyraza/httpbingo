@@ -5,15 +5,17 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"testing"
+
+	"github.com/allyraza/httpbingo/assert"
 )
 
 func TestHTTPBinNew(t *testing.T) {
 	config := &Config{
-		Addr: ":3000",
+		Address: ":3000",
 	}
 	h := New(config)
 
-	server := httptest.NewServer(h)
+	server := httptest.NewServer(h.Handler)
 
 	defer server.Close()
 
@@ -24,10 +26,5 @@ func TestHTTPBinNew(t *testing.T) {
 
 	defer w.Body.Close()
 
-	got := w.StatusCode
-	want := http.StatusOK
-
-	if want != got {
-		t.Errorf("Want %v, Got %v\n", want, got)
-	}
+	assert.Equal(t, w.StatusCode, http.StatusOK)
 }

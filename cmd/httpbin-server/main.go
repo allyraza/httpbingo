@@ -20,11 +20,11 @@ func main() {
 
 	config.ParseFile()
 
-	log.Printf("Starting server on %v\n", config.Addr)
+	log.Printf("Starting server on %v\n", config.Address)
 	app := httpbin.New(config)
 
 	server := http.Server{
-		Addr:    config.Addr,
+		Addr:    config.Address,
 		Handler: app.Handler,
 	}
 

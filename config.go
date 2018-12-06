@@ -9,7 +9,7 @@ import (
 // Config parses and holds config for httpbin server
 type Config struct {
 	Filepath string
-	Addr     string `json:"addr"`
+	Address  string `json:"address"`
 }
 
 // ParseFile parses config file for given file path

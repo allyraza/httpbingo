@@ -17,9 +17,8 @@ func request(method string, url string) *httptest.ResponseRecorder {
 	}
 	w := httptest.NewRecorder()
 
-	config := &httpbin.Config{}
-	h := httpbin.New(config)
-	h.ServeHTTP(w, r)
+	h := httpbin.New(&httpbin.Config{})
+	h.Handler.ServeHTTP(w, r)
 
 	return w
 }
