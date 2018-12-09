@@ -30,22 +30,20 @@ func Get(url string) *httptest.ResponseRecorder {
 func TestHomepage(t *testing.T) {
 	w := Get("/")
 
-	assert.Status(t, w, http.StatusOK)
+	assert.StatusOK(t, w)
 	assert.BodyContains(t, w, "httpbin")
 }
 
 func TestIP(t *testing.T) {
 	w := Get("/ip")
 
-	assert.Status(t, w, http.StatusOK)
-	assert.ContentType(t, w, "application/json")
-	assert.Body(t, w, `{"origin":"127.0.0.1"}`)
+	assert.StatusOK(t, w)
+	assert.JSON(t, w, `{"origin":"127.0.0.1"}`)
 }
 
 func TestUserAgent(t *testing.T) {
 	w := Get("/user-agent")
 
-	assert.Status(t, w, http.StatusOK)
-	assert.ContentType(t, w, "application/json")
-	assert.Body(t, w, `{"user-agent":"TestBrowser"}`)
+	assert.StatusOK(t, w)
+	assert.JSON(t, w, `{"user-agent":"TestBrowser"}`)
 }

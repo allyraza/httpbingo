@@ -1,14 +1,20 @@
 package assert
 
 import (
+	"net/http"
 	"net/http/httptest"
 	"strings"
 	"testing"
 )
 
-// Status asserts if response code is ok
+// Status asserts if response code is equal to statusCode
 func Status(t *testing.T, w *httptest.ResponseRecorder, statusCode int) {
 	Equal(t, w.Code, statusCode)
+}
+
+// StatusOK asserts if response code is ok
+func StatusOK(t *testing.T, w *httptest.ResponseRecorder) {
+	Equal(t, w.Code, http.StatusOK)
 }
 
 // Header asserts if header has value
@@ -30,4 +36,10 @@ func BodyContains(t *testing.T, w *httptest.ResponseRecorder, want string) {
 // ContentType asserts is of type contentType
 func ContentType(t *testing.T, w *httptest.ResponseRecorder, contentType string) {
 	Header(t, w, "Content-Type", contentType)
+}
+
+// JSON asserts validates json header and body
+func JSON(t *testing.T, w *httptest.ResponseRecorder, body string) {
+	Header(t, w, "Content-Type", "application/json")
+	Body(t, w, body)
 }
