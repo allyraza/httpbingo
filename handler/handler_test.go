@@ -10,8 +10,8 @@ import (
 	"github.com/allyraza/httpbingo/assert"
 )
 
-func request(method string, url string) *httptest.ResponseRecorder {
-	r, err := http.NewRequest(method, url, nil)
+func Get(url string) *httptest.ResponseRecorder {
+	r, err := http.NewRequest(http.MethodGet, url, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -28,24 +28,24 @@ func request(method string, url string) *httptest.ResponseRecorder {
 }
 
 func TestHomepage(t *testing.T) {
-	w := request("GET", "/")
+	w := Get("/")
 
-	assert.Equal(t, w.Code, http.StatusOK)
-	assert.Contains(t, w.Body.String(), "httpbin")
+	assert.Status(t, w, http.StatusOK)
+	assert.BodyContains(t, w, "httpbin")
 }
 
 func TestIP(t *testing.T) {
-	w := request("GET", "/ip")
+	w := Get("/ip")
 
-	assert.Equal(t, w.Code, http.StatusOK)
-	assert.Equal(t, w.Header().Get("Content-Type"), "application/json")
-	assert.Contains(t, w.Body.String(), `{"origin":"127.0.0.1"}`)
+	assert.Status(t, w, http.StatusOK)
+	assert.ContentType(t, w, "application/json")
+	assert.Body(t, w, `{"origin":"127.0.0.1"}`)
 }
 
 func TestUserAgent(t *testing.T) {
-	w := request("GET", "/user-agent")
+	w := Get("/user-agent")
 
-	assert.StatusOK(t, w)
-	assert.ContentTypeJSON(t, w)
-	assert.Contains(t, w.Body.String(), `{"user-agent":"TestBrowser"}`)
+	assert.Status(t, w, http.StatusOK)
+	assert.ContentType(t, w, "application/json")
+	assert.Body(t, w, `{"user-agent":"TestBrowser"}`)
 }
