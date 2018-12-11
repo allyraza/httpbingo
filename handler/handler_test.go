@@ -6,7 +6,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	httpbin "github.com/allyraza/httpbingo"
+	"github.com/allyraza/httpbingo"
 	"github.com/allyraza/httpbingo/assert"
 )
 
@@ -21,7 +21,7 @@ func Get(url string) *httptest.ResponseRecorder {
 
 	w := httptest.NewRecorder()
 
-	h := httpbin.New(&httpbin.Config{})
+	h := httpbingo.New(&httpbingo.Config{})
 	h.Handler.ServeHTTP(w, r)
 
 	return w
@@ -31,7 +31,7 @@ func TestHomepage(t *testing.T) {
 	w := Get("/")
 
 	assert.StatusOK(t, w)
-	assert.BodyContains(t, w, "httpbin")
+	assert.BodyContains(t, w, "httpbingo")
 }
 
 func TestIP(t *testing.T) {

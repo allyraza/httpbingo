@@ -13,10 +13,10 @@ const hometpl = `
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-		<title>httpbin - a http test service</title>
+		<title>httpbingo - a http test service</title>
 	</head>
 	<body>
-	 <h1>httpbin</h1>
+	 <h1>httpbingo</h1>
 	 <a href="#">Documentation</a>
 	</body>
 </html>

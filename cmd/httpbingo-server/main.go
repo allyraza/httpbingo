@@ -13,15 +13,15 @@ import (
 )
 
 func main() {
-	config := &httpbin.Config{}
+	config := &httpbingo.Config{}
 
-	flag.StringVar(&config.Filepath, "config", "config.json", "Config file for httpbin-server.")
+	flag.StringVar(&config.Filepath, "config", "config.json", "Config file for httpbingo-server.")
 	flag.Parse()
 
 	config.ParseFile()
 
 	log.Printf("Starting server on %v\n", config.Address)
-	app := httpbin.New(config)
+	app := httpbingo.New(config)
 
 	server := http.Server{
 		Addr:    config.Address,

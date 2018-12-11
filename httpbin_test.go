@@ -1,4 +1,4 @@
-package httpbin
+package httpbingo_test
 
 import (
 	"log"
@@ -6,14 +6,15 @@ import (
 	"net/http/httptest"
 	"testing"
 
+	"github.com/allyraza/httpbingo"
 	"github.com/allyraza/httpbingo/assert"
 )
 
-func TestHTTPBinNew(t *testing.T) {
-	config := &Config{
+func TestHTTPBingoNew(t *testing.T) {
+	config := &httpbingo.Config{
 		Address: ":3000",
 	}
-	h := New(config)
+	h := httpbingo.New(config)
 
 	server := httptest.NewServer(h.Handler)
 

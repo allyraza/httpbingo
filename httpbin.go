@@ -1,4 +1,4 @@
-package httpbin
+package httpbingo
 
 import (
 	"net/http"
@@ -6,13 +6,13 @@ import (
 	"github.com/allyraza/httpbingo/handler"
 )
 
-type HTTPBin struct {
+type HTTPBingo struct {
 	Config  *Config
 	Handler *http.ServeMux
 }
 
-func New(config *Config) *HTTPBin {
-	return &HTTPBin{
+func New(config *Config) *HTTPBingo {
+	return &HTTPBingo{
 		Config:  config,
 		Handler: handler.New(),
 	}

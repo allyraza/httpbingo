@@ -4,7 +4,7 @@ COPY . .
 RUN make linux
 
 FROM scratch
-COPY --from=0 /go/src/github.com/allyraza/httpbingo/httpbin-server .
+COPY --from=0 /go/src/github.com/allyraza/httpbingo/httpbingo-server .
 COPY --from=0 /go/src/github.com/allyraza/httpbingo/config.json .
 EXPOSE 8080
-ENTRYPOINT ["/httpbin-server"]
+ENTRYPOINT ["/httpbingo-server"]

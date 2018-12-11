@@ -1,8 +1,8 @@
 default: config
-	go build -o httpbin-server ./cmd/httpbin-server
+	go build -o httpbingo-server ./cmd/httpbingo-server
 
 linux: config
-	CGO_ENABLED=0 GOOS=linux go build -o httpbin-server ./cmd/httpbin-server 
+	CGO_ENABLED=0 GOOS=linux go build -o httpbingo-server ./cmd/httpbingo-server 
 
 
 config:
