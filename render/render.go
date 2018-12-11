@@ -7,7 +7,7 @@ import (
 
 // JSON sets a json http header, encodes data to json and write to response writer.
 func JSON(w http.ResponseWriter, data interface{}) error {
-	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Content-Type", "application/json; charset=utf-8")
 	encoder := json.NewEncoder(w)
 
 	err := encoder.Encode(data)

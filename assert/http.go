@@ -9,7 +9,7 @@ import (
 
 // Status asserts if response code is equal to statusCode
 func Status(t *testing.T, w *httptest.ResponseRecorder, statusCode int) {
-	Equal(t, w.Code, statusCode)
+	Equal(t, statusCode, w.Code)
 }
 
 // StatusOK asserts if response code is ok
@@ -40,6 +40,6 @@ func ContentType(t *testing.T, w *httptest.ResponseRecorder, contentType string)
 
 // JSON asserts validates json header and body
 func JSON(t *testing.T, w *httptest.ResponseRecorder, body string) {
-	Header(t, w, "Content-Type", "application/json")
+	Header(t, w, "Content-Type", "application/json; charset=utf-8")
 	Body(t, w, body)
 }
