@@ -32,6 +32,7 @@ func New() *http.ServeMux {
 	mux.HandleFunc("/ip", IP)
 	mux.HandleFunc("/user-agent", UserAgent)
 	mux.HandleFunc("/headers", Headers)
+	mux.HandleFunc("/cache", Cache)
 
 	return mux
 }
@@ -59,6 +60,24 @@ func UserAgent(w http.ResponseWriter, r *http.Request) {
 	}
 
 	render.JSON(w, data)
+}
+
+// Cache Handler
+func Cache(w http.ResponseWriter, r *http.Request) {
+	ip := model.IP{}
+	ip.Parse(r)
+
+	header := model.Header{}
+	header.Parse(r)
+
+	cache := model.Cache{
+		Query:   r.URL.Query(),
+		Headers: header,
+		IP:      ip,
+		URL:     r.URL.String(),
+	}
+
+	render.JSON(w, cache)
 }
 
 // Health Handler

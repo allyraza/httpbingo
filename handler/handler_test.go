@@ -13,9 +13,9 @@ import (
 	"github.com/allyraza/httpbingo/assert"
 )
 
-type RequestFunc func(string, url.Values) *httptest.ResponseRecorder
+type requestFunc func(string, url.Values) *httptest.ResponseRecorder
 
-func MakeRequest(method string) RequestFunc {
+func makeRequest(method string) requestFunc {
 	return func(url string, params url.Values) *httptest.ResponseRecorder {
 		r, err := http.NewRequest(method, url, strings.NewReader(params.Encode()))
 		if err != nil {
@@ -40,30 +40,30 @@ func MakeRequest(method string) RequestFunc {
 	}
 }
 
-func Get(url string, params url.Values) *httptest.ResponseRecorder {
-	return MakeRequest(http.MethodGet)(url, params)
+func get(url string, params url.Values) *httptest.ResponseRecorder {
+	return makeRequest(http.MethodGet)(url, params)
 }
 
-func Post(url string, params url.Values) *httptest.ResponseRecorder {
-	return MakeRequest(http.MethodPost)(url, params)
+func post(url string, params url.Values) *httptest.ResponseRecorder {
+	return makeRequest(http.MethodPost)(url, params)
 }
 
 func TestHomepage(t *testing.T) {
-	w := Get("/", url.Values{})
+	w := get("/", url.Values{})
 
 	assert.StatusOK(t, w)
 	assert.BodyContains(t, w, "httpbingo")
 }
 
 func TestIP(t *testing.T) {
-	w := Get("/ip", url.Values{})
+	w := get("/ip", url.Values{})
 
 	assert.StatusOK(t, w)
 	assert.JSON(t, w, `{"ip":"127.0.0.1"}`)
 }
 
 func TestHeaders(t *testing.T) {
-	w := Get("/headers", url.Values{})
+	w := get("/headers", url.Values{})
 
 	headers := struct {
 		Headers map[string]string `json:"headers"`
@@ -81,8 +81,33 @@ func TestHeaders(t *testing.T) {
 	assert.JSON(t, w, string(want))
 }
 
+func TestCache(t *testing.T) {
+	w := get("/cache", url.Values{})
+
+	cache := struct {
+		Query   url.Values        `json:"query"`
+		Headers map[string]string `json:"headers"`
+		IP      string            `json:"ip"`
+		URL     string            `json:"url"`
+	}{
+		Query: url.Values{},
+		Headers: map[string]string{
+			"Accept":     "application/json; charset=utf-8",
+			"User-Agent": "HTTPBingo",
+			"Host":       "127.0.0.1",
+		},
+		IP:  "127.0.0.1",
+		URL: "http://127.0.0.1",
+	}
+
+	want, _ := json.Marshal(cache)
+
+	assert.StatusOK(t, w)
+	assert.JSON(t, w, string(want))
+}
+
 func TestUserAgent(t *testing.T) {
-	w := Get("/user-agent", url.Values{})
+	w := get("/user-agent", url.Values{})
 
 	assert.StatusOK(t, w)
 	assert.JSON(t, w, `{"user-agent":"HTTPBingo"}`)
@@ -90,14 +115,14 @@ func TestUserAgent(t *testing.T) {
 
 func TestPost(t *testing.T) {
 	t.Run("Default", func(t *testing.T) {
-		w := Post("/post", url.Values{"name": []string{"foo"}})
+		w := post("/post", url.Values{"name": []string{"foo"}})
 
 		assert.StatusOK(t, w)
 		assert.Body(t, w, "hello, foo")
 	})
 
 	t.Run("Error", func(t *testing.T) {
-		w := Get("/post", url.Values{"name": []string{"foo"}})
+		w := get("/post", url.Values{"name": []string{"foo"}})
 
 		assert.Status(t, w, http.StatusMethodNotAllowed)
 		assert.Body(t, w, "Method not allowed")
