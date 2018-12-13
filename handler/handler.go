@@ -6,6 +6,7 @@ import (
 
 	"github.com/allyraza/httpbingo/model"
 	"github.com/allyraza/httpbingo/render"
+	"github.com/allyraza/httpbingo/request"
 	"github.com/allyraza/httpbingo/version"
 )
 
@@ -39,16 +40,18 @@ func New() *http.ServeMux {
 
 // Headers Handler
 func Headers(w http.ResponseWriter, r *http.Request) {
-	header := &model.Header{}
-	header.Parse(r)
+	header := &model.Header{
+		Headers: request.ParseHeaders(r),
+	}
 
 	render.JSON(w, header)
 }
 
 // IP Handler
 func IP(w http.ResponseWriter, r *http.Request) {
-	ip := model.IP{}
-	ip.Parse(r)
+	ip := model.IP{
+		IP: request.ParseIP(r),
+	}
 
 	render.JSON(w, ip)
 }
@@ -64,16 +67,10 @@ func UserAgent(w http.ResponseWriter, r *http.Request) {
 
 // Cache Handler
 func Cache(w http.ResponseWriter, r *http.Request) {
-	ip := model.IP{}
-	ip.Parse(r)
-
-	header := model.Header{}
-	header.Parse(r)
-
 	cache := model.Cache{
 		Query:   r.URL.Query(),
-		Headers: header,
-		IP:      ip,
+		Headers: request.ParseHeaders(r),
+		IP:      request.ParseIP(r),
 		URL:     r.URL.String(),
 	}
 

@@ -3,8 +3,8 @@ package model
 import "net/url"
 
 type Cache struct {
-	*IP
-	*Header
-	Query url.Values `json:"query"`
-	URL   string     `json:"url"`
+	Query   url.Values        `json:"query"`
+	Headers map[string]string `json:"headers"`
+	IP      string            `json:"ip"`
+	URL     string            `json:"url"`
 }

@@ -11,6 +11,7 @@ import (
 
 	"github.com/allyraza/httpbingo"
 	"github.com/allyraza/httpbingo/assert"
+	"github.com/allyraza/httpbingo/model"
 )
 
 type requestFunc func(string, url.Values) *httptest.ResponseRecorder
@@ -65,9 +66,7 @@ func TestIP(t *testing.T) {
 func TestHeaders(t *testing.T) {
 	w := get("/headers", url.Values{})
 
-	headers := struct {
-		Headers map[string]string `json:"headers"`
-	}{
+	headers := model.Header{
 		Headers: map[string]string{
 			"Accept":     "application/json; charset=utf-8",
 			"User-Agent": "HTTPBingo",
@@ -84,12 +83,7 @@ func TestHeaders(t *testing.T) {
 func TestCache(t *testing.T) {
 	w := get("/cache", url.Values{})
 
-	cache := struct {
-		Query   url.Values        `json:"query"`
-		Headers map[string]string `json:"headers"`
-		IP      string            `json:"ip"`
-		URL     string            `json:"url"`
-	}{
+	cache := model.Cache{
 		Query: url.Values{},
 		Headers: map[string]string{
 			"Accept":     "application/json; charset=utf-8",
@@ -97,7 +91,7 @@ func TestCache(t *testing.T) {
 			"Host":       "127.0.0.1",
 		},
 		IP:  "127.0.0.1",
-		URL: "http://127.0.0.1",
+		URL: "/cache",
 	}
 
 	want, _ := json.Marshal(cache)
