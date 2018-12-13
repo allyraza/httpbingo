@@ -1,4 +1,4 @@
-package handler_test
+package api_test
 
 import (
 	"encoding/json"
@@ -10,8 +10,8 @@ import (
 	"testing"
 
 	"github.com/allyraza/httpbingo"
+	"github.com/allyraza/httpbingo/api"
 	"github.com/allyraza/httpbingo/assert"
-	"github.com/allyraza/httpbingo/model"
 )
 
 type requestFunc func(string, url.Values) *httptest.ResponseRecorder
@@ -66,7 +66,7 @@ func TestIP(t *testing.T) {
 func TestHeaders(t *testing.T) {
 	w := get("/headers", url.Values{})
 
-	headers := model.Header{
+	headers := api.Header{
 		Headers: map[string]string{
 			"Accept":     "application/json; charset=utf-8",
 			"User-Agent": "HTTPBingo",
@@ -83,7 +83,7 @@ func TestHeaders(t *testing.T) {
 func TestCache(t *testing.T) {
 	w := get("/cache", url.Values{})
 
-	cache := model.Cache{
+	cache := api.Cache{
 		Query: url.Values{},
 		Headers: map[string]string{
 			"Accept":     "application/json; charset=utf-8",

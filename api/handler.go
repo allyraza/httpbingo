@@ -1,10 +1,9 @@
-package handler
+package api
 
 import (
 	"fmt"
 	"net/http"
 
-	"github.com/allyraza/httpbingo/model"
 	"github.com/allyraza/httpbingo/render"
 	"github.com/allyraza/httpbingo/request"
 	"github.com/allyraza/httpbingo/version"
@@ -23,51 +22,36 @@ const hometpl = `
 </html>
 `
 
-// New init handler and registers routes
-func New() *http.ServeMux {
-	mux := http.NewServeMux()
-	mux.HandleFunc("/", Home)
-	mux.HandleFunc("/post", Post)
-	mux.HandleFunc("/health", Health)
-	mux.HandleFunc("/version", Version)
-	mux.HandleFunc("/ip", IP)
-	mux.HandleFunc("/user-agent", UserAgent)
-	mux.HandleFunc("/headers", Headers)
-	mux.HandleFunc("/cache", Cache)
-
-	return mux
-}
-
-// Headers Handler
-func Headers(w http.ResponseWriter, r *http.Request) {
-	header := &model.Header{
+// HeadersHandler
+func HeadersHandler(w http.ResponseWriter, r *http.Request) {
+	header := &Header{
 		Headers: request.ParseHeaders(r),
 	}
 
 	render.JSON(w, header)
 }
 
-// IP Handler
-func IP(w http.ResponseWriter, r *http.Request) {
-	ip := model.IP{
+// IPHandler
+func IPHandler(w http.ResponseWriter, r *http.Request) {
+	ip := IP{
 		IP: request.ParseIP(r),
 	}
 
 	render.JSON(w, ip)
 }
 
-// UserAgent Handler
-func UserAgent(w http.ResponseWriter, r *http.Request) {
-	data := model.UserAgent{
+// UserAgentHandler
+func UserAgentHandler(w http.ResponseWriter, r *http.Request) {
+	data := UserAgent{
 		UserAgent: r.UserAgent(),
 	}
 
 	render.JSON(w, data)
 }
 
-// Cache Handler
-func Cache(w http.ResponseWriter, r *http.Request) {
-	cache := model.Cache{
+// CacheHandler
+func CacheHandler(w http.ResponseWriter, r *http.Request) {
+	cache := Cache{
 		Query:   r.URL.Query(),
 		Headers: request.ParseHeaders(r),
 		IP:      request.ParseIP(r),
@@ -78,22 +62,22 @@ func Cache(w http.ResponseWriter, r *http.Request) {
 }
 
 // Health Handler
-func Health(w http.ResponseWriter, r *http.Request) {
+func HealthHandler(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 }
 
 // Version Handler
-func Version(w http.ResponseWriter, r *http.Request) {
+func VersionHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintln(w, version.Full)
 }
 
 // Home Handler
-func Home(w http.ResponseWriter, r *http.Request) {
+func HomeHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintln(w, hometpl)
 }
 
 // Post accepts posts requests only
-func Post(w http.ResponseWriter, r *http.Request) {
+func PostHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		return

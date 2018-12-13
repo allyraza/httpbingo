@@ -3,7 +3,7 @@ package httpbingo
 import (
 	"net/http"
 
-	"github.com/allyraza/httpbingo/handler"
+	"github.com/allyraza/httpbingo/api"
 )
 
 type HTTPBingo struct {
@@ -12,8 +12,11 @@ type HTTPBingo struct {
 }
 
 func New(config *Config) *HTTPBingo {
+	mux := http.NewServeMux()
+	api.Routes(mux)
+
 	return &HTTPBingo{
 		Config:  config,
-		Handler: handler.New(),
+		Handler: mux,
 	}
 }
